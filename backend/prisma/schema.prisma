@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model annonce {
+  id                 Int                @id @default(autoincrement())
+  titre              String             @db.VarChar(200)
+  ville              String             @db.VarChar(100)
+  quartier           String             @db.VarChar(100)
+  description        String?
+  prix               Decimal            @db.Decimal(10, 2)
+  nombre_pieces      Int?               @default(1)
+  date_debut_annonce DateTime?          @db.Date
+  date_fin_annonce   DateTime?          @db.Date
+  statut             String             @default("en_attente_paiement") @db.VarChar(30)
+  date_creation      DateTime?          @default(now()) @db.Timestamp(6)
+  id_typechambre     Int
+  id_typeannonce     Int
+  id_utilisateur     Int
+  typeannonce        typeannonce        @relation(fields: [id_typeannonce], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  typechambre        typechambre        @relation(fields: [id_typechambre], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  utilisateur        utilisateur        @relation(fields: [id_utilisateur], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  annoncecommodite   annoncecommodite[]
+  avis               avis[]
+  favori             favori[]
+  imageannonce       imageannonce[]
+  paiementannonce    paiementannonce[]
+  signalement        signalement[]
+
+  @@index([statut], map: "idx_annonce_statut")
+  @@index([id_utilisateur], map: "idx_annonce_utilisateur")
+  @@index([ville], map: "idx_annonce_ville")
+}
+
+model annoncecommodite {
+  id_annonce   Int
+  id_commodite Int
+  annonce      annonce   @relation(fields: [id_annonce], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  commodite    commodite @relation(fields: [id_commodite], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_annonce, id_commodite])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model avis {
+  id             Int         @id @default(autoincrement())
+  note           Int
+  commentaire    String?
+  date_avis      DateTime?   @default(now()) @db.Timestamp(6)
+  id_utilisateur Int
+  id_annonce     Int
+  annonce        annonce     @relation(fields: [id_annonce], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  utilisateur    utilisateur @relation(fields: [id_utilisateur], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([id_utilisateur, id_annonce])
+  @@index([id_annonce], map: "idx_avis_annonce")
+}
+
+model commodite {
+  id               Int                @id @default(autoincrement())
+  libelle          String             @unique @db.VarChar(100)
+  annoncecommodite annoncecommodite[]
+}
+
+model favori {
+  id             Int         @id @default(autoincrement())
+  date_ajout     DateTime?   @default(now()) @db.Timestamp(6)
+  id_utilisateur Int
+  id_annonce     Int
+  annonce        annonce     @relation(fields: [id_annonce], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  utilisateur    utilisateur @relation(fields: [id_utilisateur], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([id_utilisateur, id_annonce])
+  @@index([id_utilisateur], map: "idx_favori_utilisateur")
+}
+
+model imageannonce {
+  id             Int      @id @default(autoincrement())
+  chemin_image   String   @db.VarChar(255)
+  est_principale Boolean? @default(false)
+  id_annonce     Int
+  annonce        annonce  @relation(fields: [id_annonce], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model paiementannonce {
+  id                    Int         @id @default(autoincrement())
+  date_paiement         DateTime?   @default(now()) @db.Timestamp(6)
+  montant_paye          Decimal     @db.Decimal(10, 2)
+  mode_paiement         String      @db.VarChar(50)
+  reference_transaction String?     @unique @db.VarChar(100)
+  statut                String      @default("en_attente") @db.VarChar(20)
+  id_annonce            Int
+  id_utilisateur        Int
+  id_typeannonce        Int
+  annonce               annonce     @relation(fields: [id_annonce], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  typeannonce           typeannonce @relation(fields: [id_typeannonce], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  utilisateur           utilisateur @relation(fields: [id_utilisateur], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([id_annonce], map: "idx_paiement_annonce")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model signalement {
+  id               Int         @id @default(autoincrement())
+  motif            String      @db.VarChar(100)
+  description      String?
+  date_signalement DateTime?   @default(now()) @db.Timestamp(6)
+  statut           String      @default("en_cours") @db.VarChar(20)
+  id_utilisateur   Int
+  id_annonce       Int
+  annonce          annonce     @relation(fields: [id_annonce], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  utilisateur      utilisateur @relation(fields: [id_utilisateur], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model typeannonce {
+  id              Int               @id @default(autoincrement())
+  libelle         String            @unique @db.VarChar(100)
+  duree_jours     Int
+  prix            Decimal           @db.Decimal(10, 2)
+  annonce         annonce[]
+  paiementannonce paiementannonce[]
+}
+
+model typechambre {
+  id      Int       @id @default(autoincrement())
+  libelle String    @unique @db.VarChar(100)
+  annonce annonce[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model utilisateur {
+  id               Int               @id @default(autoincrement())
+  nom              String            @db.VarChar(100)
+  prenom           String            @db.VarChar(100)
+  telephone        String            @unique @db.VarChar(20)
+  adresse          String?
+  motdepasse       String            @db.VarChar(255)
+  login            String            @unique @db.VarChar(100)
+  role             String            @default("chercheur") @db.VarChar(20)
+  date_inscription DateTime?         @default(now()) @db.Timestamp(6)
+  est_actif        Boolean?          @default(true)
+  annonce          annonce[]
+  avis             avis[]
+  favori           favori[]
+  paiementannonce  paiementannonce[]
+  signalement      signalement[]
+}
