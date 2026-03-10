@@ -36,12 +36,12 @@
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block text-sm font-semibold text-gray-300 mb-2">Nom</label>
-              <input v-model="form.nom" type="text" placeholder="Dupont"
+              <input v-model="form.nom" type="text" placeholder="NONTINTCHE"
                 class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all" />
             </div>
             <div>
               <label class="block text-sm font-semibold text-gray-300 mb-2">Prénom</label>
-              <input v-model="form.prenom" type="text" placeholder="Jean"
+              <input v-model="form.prenom" type="text" placeholder="Nontintche"
                 class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all" />
             </div>
           </div>
@@ -49,7 +49,7 @@
           <!-- Téléphone -->
           <div>
             <label class="block text-sm font-semibold text-gray-300 mb-2">Téléphone</label>
-            <input v-model="form.telephone" type="tel" placeholder="97000000"
+            <input v-model="form.telephone" type="tel" placeholder="0100000000"
               class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all" />
           </div>
 
