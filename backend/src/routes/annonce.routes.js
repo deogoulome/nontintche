@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import { creerAnnonce, listerAnnonces, detailAnnonce, mesAnnonces, modifierAnnonce, supprimerAnnonce, renouvelerAnnonce } from '../controllers/annonce.controller.js'
 import { verifierToken, estProprietaire } from '../middlewares/auth.middleware.js'
-import { upload, uploadImages } from '../controllers/upload.controller.js'
+import { upload } from '../middlewares/upload.middleware.js'
+import { uploadImages } from '../controllers/upload.controller.js'
 
 const router = Router()
 
