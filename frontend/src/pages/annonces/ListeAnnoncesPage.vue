@@ -27,10 +27,10 @@
             <option value="">🏠 Tous les types</option>
             <option v-for="t in typeChambres" :key="t.id" :value="t.id">{{ t.emoji }} {{ t.libelle }}</option>
           </select>
-          <button @click="chargerAnnonces"
+          <!-- <button @click="chargerAnnonces"
             class="bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 text-white px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-glow-sm">
             Filtrer
-          </button>
+          </button> -->
           <button @click="reinitialiser"
             class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200">
             Réinitialiser
@@ -128,7 +128,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+
+
+import { ref, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import Navbar from '../../components/layout/Navbar.vue'
 import api from '../../services/api.js'
@@ -138,6 +140,7 @@ const router = useRouter()
 const route = useRoute()
 const annonces = ref([])
 const chargement = ref(false)
+let debounceTimer = null
 
 const typeChambres = [
   { id: 1, libelle: 'Studio', emoji: '🛏️' },
@@ -173,9 +176,18 @@ const chargerAnnonces = async () => {
 
 const reinitialiser = () => {
   filtres.value = { ville: '', quartier: '', prix_max: '', id_typechambre: '' }
-  chargerAnnonces()
 }
+
+// ✅ Watch avec debounce — attend 400ms après la dernière frappe
+watch(filtres, () => {
+  clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    chargerAnnonces()
+  }, 400)
+}, { deep: true })
 
 const voirDetail = (id) => router.push(`/annonces/${id}`)
 onMounted(chargerAnnonces)
+
+
 </script>
