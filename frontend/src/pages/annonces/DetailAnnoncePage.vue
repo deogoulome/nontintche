@@ -49,7 +49,7 @@
       <!-- Miniatures -->
       <div v-if="annonce.imageannonce?.length > 1" class="flex gap-2 mb-6 overflow-x-auto pb-1">
         <img v-for="(img, index) in annonce.imageannonce" :key="index"
-         :src="img.chemin_image"
+         :src="annonce.imageannonce[0].chemin_image"
           @click="imageActive = index"
           :class="index === imageActive ? 'border-primary-500 opacity-100' : 'border-transparent opacity-60'"
           class="w-16 h-16 object-cover rounded-xl border-2 cursor-pointer hover:opacity-100 transition-all flex-shrink-0" />

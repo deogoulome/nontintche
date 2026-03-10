@@ -38,7 +38,7 @@
           <!-- Image -->
           <div class="h-48 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 flex items-center justify-center relative overflow-hidden">
             <img v-if="f.annonce.imageannonce?.length > 0"
-              :src="`http://localhost:3000/${f.annonce.imageannonce[0].chemin_image}`"
+              :src="annonce.imageannonce[0].chemin_image"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             <span v-else class="text-6xl">🏠</span>
 
