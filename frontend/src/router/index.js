@@ -6,8 +6,13 @@ const routes = [
   { path: '/', component: () => import('../pages/HomePage.vue') },
   { path: '/connexion', component: () => import('../pages/auth/ConnexionPage.vue') },
   { path: '/inscription', component: () => import('../pages/auth/InscriptionPage.vue') },
-  { path: '/annonces', component: () => import('../pages/annonces/ListeAnnoncesPage.vue'), meta: { requiresAuth: true } },
-  { path: '/annonces/:id', component: () => import('../pages/annonces/DetailAnnoncePage.vue'), meta: { requiresAuth: true } },
+  // { path: '/annonces', component: () => import('../pages/annonces/ListeAnnoncesPage.vue'), meta: { requiresAuth: true } },
+  // { path: '/annonces/:id', component: () => import('../pages/annonces/DetailAnnoncePage.vue'), meta: { requiresAuth: true } },
+
+
+// Après — pas de requiresAuth
+{ path: '/annonces', component: () => import('../pages/annonces/ListeAnnoncesPage.vue') },
+{ path: '/annonces/:id', component: () => import('../pages/annonces/DetailAnnoncePage.vue') },
   { path: '/dashboard', component: () => import('../pages/dashboard/DashboardPage.vue'), meta: { requiresAuth: true, requiresProprietaire: true } },
   { path: '/dashboard/nouvelle-annonce', component: () => import('../pages/dashboard/NouvelleAnnoncePage.vue'), meta: { requiresAuth: true, requiresProprietaire: true } },
   { path: '/:pathMatch(.*)*', component: () => import('../pages/NotFoundPage.vue') },

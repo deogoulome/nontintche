@@ -22,7 +22,7 @@
             class="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all duration-200">
             Accueil
           </RouterLink>
-          <RouterLink v-if="auth.estConnecte" to="/annonces"
+          <RouterLink  to="/annonces"
             class="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all duration-200">
             Annonces
           </RouterLink>
@@ -138,7 +138,7 @@
             class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 transition-colors font-medium">
             🏠 Accueil
           </RouterLink>
-          <RouterLink v-if="auth.estConnecte" to="/annonces" @click="menuMobileOuvert = false"
+          <RouterLink  to="/annonces" @click="menuMobileOuvert = false"
             class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 transition-colors font-medium">
             🔍 Annonces
           </RouterLink>
