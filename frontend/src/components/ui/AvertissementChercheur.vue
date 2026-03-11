@@ -141,7 +141,7 @@ onMounted(() => {
   if (dernierVu) {
     const heuresPassees = (Date.now() - parseInt(dernierVu)) / (1000 * 60 * 60)
     console.log('heuresPassees:', heuresPassees)
-    if (heuresPassees < 24) return
+    if (heuresPassees < 0.25) return
   }
   setTimeout(() => { visible.value = true }, 1500)
 })
