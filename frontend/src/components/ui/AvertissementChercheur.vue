@@ -118,12 +118,29 @@ const fermerSansCocher = () => {
   sessionStorage.setItem('avertissement_ferme', 'true')
 }
 
+// onMounted(() => {
+//   const dernierVu = localStorage.getItem('avertissement_vu')
+//   const fermeDansSession = sessionStorage.getItem('avertissement_ferme')
+//   if (fermeDansSession) return
+//   if (dernierVu) {
+//     const heuresPassees = (Date.now() - parseInt(dernierVu)) / (1000 * 60 * 60)
+//     if (heuresPassees < 24) return
+//   }
+//   setTimeout(() => { visible.value = true }, 1500)
+// })
+
+
 onMounted(() => {
   const dernierVu = localStorage.getItem('avertissement_vu')
   const fermeDansSession = sessionStorage.getItem('avertissement_ferme')
+
+  console.log('dernierVu:', dernierVu)
+  console.log('fermeDansSession:', fermeDansSession)
+
   if (fermeDansSession) return
   if (dernierVu) {
     const heuresPassees = (Date.now() - parseInt(dernierVu)) / (1000 * 60 * 60)
+    console.log('heuresPassees:', heuresPassees)
     if (heuresPassees < 24) return
   }
   setTimeout(() => { visible.value = true }, 1500)
