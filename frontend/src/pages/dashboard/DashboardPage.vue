@@ -25,7 +25,7 @@
       </RouterLink>
 
       <!-- Stats -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
           <p class="text-3xl font-bold text-primary-600">{{ stats.total }}</p>
           <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Total annonces</p>
@@ -161,7 +161,7 @@
     <h3 class="font-bold text-gray-800 dark:text-white text-lg mb-2">🔄 Renouveler l'annonce</h3>
     <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">{{ annonceSel?.titre }}</p>
 
-    <div class="grid grid-cols-3 gap-2 mb-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       <button v-for="t in typeAnnonces" :key="t.id"
         @click="typeRenouvellement = t.id"
         :class="typeRenouvellement === t.id

@@ -60,7 +60,7 @@
       </div>
 
       <!-- Grille annonces -->
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <div v-for="(annonce, i) in annonces" :key="annonce.id"
           :style="`animation-delay: ${i * 0.05}s`"
           class="bg-white dark:bg-gray-800 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 overflow-hidden cursor-pointer border border-gray-100 dark:border-gray-700 card-hover animate-fade-in-up group"

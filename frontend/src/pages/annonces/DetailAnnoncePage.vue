@@ -55,7 +55,7 @@
           class="w-16 h-16 object-cover rounded-xl border-2 cursor-pointer hover:opacity-100 transition-all flex-shrink-0" />
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 
         <!-- Infos principales -->
         <div class="md:col-span-2 space-y-6">
@@ -213,7 +213,7 @@
           <!-- Motif -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Motif du signalement</label>
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               <button v-for="motif in motifs" :key="motif"
                 @click="signalement.motif = motif"
                 :class="signalement.motif === motif

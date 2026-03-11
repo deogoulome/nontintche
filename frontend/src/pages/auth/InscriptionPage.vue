@@ -33,7 +33,7 @@
 
         <div class="space-y-4">
           <!-- Nom / Prénom -->
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <div>
               <label class="block text-sm font-semibold text-gray-300 mb-2">Nom</label>
               <input v-model="form.nom" type="text" placeholder="NONTINTCHE"
@@ -84,7 +84,7 @@
           <!-- Rôle -->
           <div>
             <label class="block text-sm font-semibold text-gray-300 mb-2">Je suis...</label>
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               <button @click="form.role = 'chercheur'"
                 :class="form.role === 'chercheur'
                   ? 'border-primary-500 bg-primary-500/20 text-primary-300'

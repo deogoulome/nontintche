@@ -3,60 +3,62 @@
     <Navbar />
 
     <!-- Hero -->
-<section class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-gray-900 via-primary-900 to-primary-800">      <!-- Pattern bg -->
-      <div class="absolute inset-0 pattern-bg opacity-30"></div>
-      <!-- Glow -->
-   <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/30 rounded-full blur-3xl"></div>
-<div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary-300/20 rounded-full blur-2xl"></div>
+<section class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-gray-900 via-primary-900 to-primary-800">
+  <div class="absolute inset-0 pattern-bg opacity-30"></div>
+  <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/30 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary-300/20 rounded-full blur-2xl"></div>
 
-      <div class="relative max-w-7xl mx-auto px-4 py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <!-- Texte -->
-        <div class="text-white">
-          <div class="inline-flex items-center gap-2 bg-primary-900/50 border border-primary-700/50 text-primary-300 text-sm px-4 py-2 rounded-full mb-6 animate-fade-in">
-            <span class="w-2 h-2 bg-primary-400 rounded-full animate-pulse"></span>
-            500+ annonces actives au Bénin
-          </div>
-          <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 animate-fade-in-up">
-            Trouvez votre
-            <span class="gradient-text block">chez-vous</span>
-            idéal 🏠
-          </h1>
-          <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-8 animate-fade-in-up delay-100">
-            NonTinTché connecte propriétaires et chercheurs de logements partout au Bénin. Simple, rapide, fiable.
-          </p>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center">
 
-          <!-- Recherche -->
-          <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 flex flex-col sm:flex-row gap-2 animate-fade-in-up delay-200">
-            <input v-model="recherche.ville" type="text" placeholder="🏙️ Ville (ex: Cotonou)"
-              class="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
-            <input v-model="recherche.quartier" type="text" placeholder="📍 Quartier"
-              class="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
-            <button @click="lancerRecherche"
-              class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-glow whitespace-nowrap">
-              Rechercher →
-            </button>
-          </div>
+      <!-- Texte -->
+      <div class="text-white text-center lg:text-left">
+        <div class="inline-flex items-center gap-2 bg-primary-900/50 border border-primary-700/50 text-primary-300 text-sm px-4 py-2 rounded-full mb-6 animate-fade-in">
+          <span class="w-2 h-2 bg-primary-400 rounded-full animate-pulse"></span>
+          500+ annonces actives au Bénin
         </div>
+        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 animate-fade-in-up">
+          Trouvez votre
+          <span class="gradient-text block">chez-vous</span>
+          idéal 🏠
+        </h1>
+        <p class="text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed mb-8 animate-fade-in-up delay-100 max-w-xl mx-auto lg:mx-0">
+          NonTinTché connecte propriétaires et chercheurs de logements partout au Bénin. Simple, rapide, fiable.
+        </p>
 
-        <!-- Stats cards -->
-        <div class="grid grid-cols-2 gap-4 animate-fade-in-up delay-300">
-          <div v-for="(stat, i) in stats" :key="i"
-            class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1">
-            <div class="text-3xl mb-2">{{ stat.emoji }}</div>
-            <p class="text-2xl font-display font-bold text-white">{{ stat.valeur }}</p>
-            <p class="text-gray-400 text-sm mt-1">{{ stat.label }}</p>
-          </div>
+        <!-- Recherche -->
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 flex flex-col sm:flex-row gap-2 animate-fade-in-up delay-200">
+          <input v-model="recherche.ville" type="text" placeholder="🏙️ Ville (ex: Cotonou)"
+            class="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
+          <input v-model="recherche.quartier" type="text" placeholder="📍 Quartier"
+            class="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
+          <button @click="lancerRecherche"
+            class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-glow whitespace-nowrap w-full sm:w-auto">
+            Rechercher →
+          </button>
         </div>
       </div>
 
-      <!-- Scroll indicator -->
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-400 animate-bounce">
-        <span class="text-xs">Défiler</span>
-        <div class="w-5 h-8 border-2 border-gray-500 rounded-full flex justify-center pt-1">
-          <div class="w-1 h-2 bg-primary-400 rounded-full animate-bounce"></div>
+      <!-- Stats cards -->
+      <div class="grid grid-cols-2 gap-4 animate-fade-in-up delay-300">
+        <div v-for="(stat, i) in stats" :key="i"
+          class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4 sm:p-5 hover:bg-white/20 transition-all duration-300 hover:-translate-y-1">
+          <div class="text-3xl mb-2">{{ stat.emoji }}</div>
+          <p class="text-xl sm:text-2xl font-display font-bold text-white">{{ stat.valeur }}</p>
+          <p class="text-gray-400 text-xs sm:text-sm mt-1">{{ stat.label }}</p>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-400 animate-bounce hidden sm:flex">
+    <span class="text-xs">Défiler</span>
+    <div class="w-5 h-8 border-2 border-gray-500 rounded-full flex justify-center pt-1">
+      <div class="w-1 h-2 bg-primary-400 rounded-full animate-bounce"></div>
+    </div>
+  </div>
+</section>
 
     <!-- Types de chambres -->
     <section class="py-20 px-4 bg-gray-50 dark:bg-gray-900">

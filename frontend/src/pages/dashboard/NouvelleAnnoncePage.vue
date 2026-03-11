@@ -24,7 +24,7 @@
           </div>
 
           <!-- Ville / Quartier -->
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Ville</label>
               <input v-model="form.ville" type="text" placeholder="Cotonou"
@@ -45,7 +45,7 @@
           </div>
 
           <!-- Prix / Pièces -->
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Prix (FCFA/mois)</label>
               <input v-model="form.prix" type="number" placeholder="25000"
@@ -61,7 +61,7 @@
           <!-- Type chambre -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Type de logement</label>
-            <div class="grid grid-cols-3 gap-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               <button v-for="t in typeChambres" :key="t.id" @click="form.id_typechambre = t.id"
                 :class="form.id_typechambre === t.id
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600'
@@ -75,7 +75,7 @@
           <!-- Type annonce -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Durée de publication</label>
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               <button v-for="t in typeAnnonces" :key="t.id" @click="form.id_typeannonce = t.id"
                 :class="form.id_typeannonce === t.id
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
@@ -121,7 +121,7 @@
             </div>
 
             <!-- Aperçu images -->
-            <div v-if="aperçuImages.length > 0" class="grid grid-cols-3 gap-3 mt-4">
+            <div v-if="aperçuImages.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               <div v-for="(img, index) in aperçuImages" :key="index" class="relative group">
                 <img :src="img.url" class="w-full h-24 object-cover rounded-xl border-2"
                   :class="index === 0 ? 'border-primary-500' : 'border-gray-200 dark:border-gray-600'" />

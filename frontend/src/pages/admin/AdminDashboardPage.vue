@@ -29,7 +29,7 @@
           <div class="text-5xl mb-4">⏳</div>
         </div>
         <div v-else>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
               <p class="text-3xl font-bold text-primary-600">{{ stats.totalUtilisateurs }}</p>
               <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">👤 Utilisateurs</p>

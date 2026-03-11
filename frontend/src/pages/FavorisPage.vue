@@ -30,7 +30,7 @@
         </RouterLink>
       </div>
 
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <div v-for="(f, i) in favoris" :key="f.id"
           :style="`animation-delay: ${i * 0.05}s`"
           class="bg-white dark:bg-gray-800 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 card-hover animate-fade-in-up group">
