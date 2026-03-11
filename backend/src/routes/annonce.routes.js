@@ -6,9 +6,12 @@ import { uploadImages } from '../controllers/upload.controller.js'
 
 const router = Router()
 
-router.get('/', verifierToken, listerAnnonces)
+// ✅ Routes publiques — pas besoin de token
+router.get('/', listerAnnonces)
+router.get('/:id', detailAnnonce)
+
+// 🔒 Routes protégées
 router.get('/mes-annonces', verifierToken, estProprietaire, mesAnnonces)
-router.get('/:id', verifierToken, detailAnnonce)
 router.post('/', verifierToken, estProprietaire, creerAnnonce)
 router.put('/:id', verifierToken, estProprietaire, modifierAnnonce)
 router.delete('/:id', verifierToken, estProprietaire, supprimerAnnonce)
