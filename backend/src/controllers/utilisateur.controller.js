@@ -14,7 +14,7 @@ export const monProfil = async (req, res) => {
     })
     res.json(utilisateur)
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }
 
@@ -28,7 +28,7 @@ export const modifierProfil = async (req, res) => {
     })
     res.json({ message: 'Profil modifié', utilisateur: updated })
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }
 
@@ -42,6 +42,6 @@ export const changerMotDePasse = async (req, res) => {
     await prisma.utilisateur.update({ where: { id: req.utilisateur.id }, data: { motdepasse: hash } })
     res.json({ message: 'Mot de passe modifié avec succès' })
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }

@@ -1,6 +1,6 @@
 import prisma from '../prisma.js'
 
-// CRÉER UNE ANNONCE
+// CREER UNE ANNONCE
 export const creerAnnonce = async (req, res) => {
   try {
     const { titre, ville, quartier, description, prix, nombre_pieces, id_typechambre, id_typeannonce, commodites } = req.body
@@ -23,40 +23,63 @@ export const creerAnnonce = async (req, res) => {
       }
     })
 
-    res.status(201).json({ message: 'Annonce créée, en attente de paiement', annonce })
+    res.status(201).json({ message: 'Annonce creee, en attente de paiement', annonce })
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    console.error(err)
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }
 
-// LISTE DES ANNONCES ACTIVES (avec filtres)
+// LISTE DES ANNONCES ACTIVES (avec filtres + pagination)
 export const listerAnnonces = async (req, res) => {
   try {
-    const { ville, quartier, id_typechambre, prix_min, prix_max } = req.query
+    const {
+      ville, quartier, id_typechambre, prix_min, prix_max,
+      commodites,
+      page = 1, limit = 12
+    } = req.query
 
-    const annonces = await prisma.annonce.findMany({
-      where: {
-        statut: 'active',
-        ...(ville && { ville: { contains: ville, mode: 'insensitive' } }),
-        ...(quartier && { quartier: { contains: quartier, mode: 'insensitive' } }),
-        ...(id_typechambre && { id_typechambre: parseInt(id_typechambre) }),
-        ...(prix_min || prix_max ? {
-          prix: {
-            ...(prix_min && { gte: parseFloat(prix_min) }),
-            ...(prix_max && { lte: parseFloat(prix_max) })
-          }
-        } : {})
-      },
-      include: {
-        typechambre: true,
-        typeannonce: true,
-        utilisateur: { select: { nom: true, prenom: true, telephone: true } },
-        imageannonce: { where: { est_principale: true } },
-        annoncecommodite: { include: { commodite: true } },
-        avis: { select: { note: true } }
-      },
-      orderBy: { date_creation: 'desc' }
-    })
+    const pageNum  = Math.max(1, parseInt(page))
+    const limitNum = Math.min(50, Math.max(1, parseInt(limit)))
+    const skip = (pageNum - 1) * limitNum
+
+    const commoditeIds = commodites
+      ? commodites.split(',').map(c => parseInt(c)).filter(Boolean)
+      : []
+
+    const where = {
+      statut: 'active',
+      ...(ville     && { ville:    { contains: ville,    mode: 'insensitive' } }),
+      ...(quartier  && { quartier: { contains: quartier, mode: 'insensitive' } }),
+      ...(id_typechambre && { id_typechambre: parseInt(id_typechambre) }),
+      ...((prix_min || prix_max) && {
+        prix: {
+          ...(prix_min && { gte: parseFloat(prix_min) }),
+          ...(prix_max && { lte: parseFloat(prix_max) }),
+        }
+      }),
+      ...(commoditeIds.length > 0 && {
+        annoncecommodite: { some: { id_commodite: { in: commoditeIds } } }
+      }),
+    }
+
+    const [total, annonces] = await Promise.all([
+      prisma.annonce.count({ where }),
+      prisma.annonce.findMany({
+        where,
+        include: {
+          typechambre: true,
+          typeannonce: true,
+          utilisateur: { select: { nom: true, prenom: true, telephone: true } },
+          imageannonce: { where: { est_principale: true } },
+          annoncecommodite: { include: { commodite: true } },
+          avis: { select: { note: true } }
+        },
+        orderBy: { date_creation: 'desc' },
+        skip,
+        take: limitNum,
+      })
+    ])
 
     const annoncesAvecNote = annonces.map(a => ({
       ...a,
@@ -65,13 +88,22 @@ export const listerAnnonces = async (req, res) => {
         : null
     }))
 
-    res.json(annoncesAvecNote)
+    res.json({
+      data: annoncesAvecNote,
+      pagination: {
+        total,
+        page: pageNum,
+        limit: limitNum,
+        totalPages: Math.ceil(total / limitNum),
+      }
+    })
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    console.error(err)
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }
 
-// DÉTAIL D'UNE ANNONCE
+// DETAIL D'UNE ANNONCE
 export const detailAnnonce = async (req, res) => {
   try {
     const { id } = req.params
@@ -96,11 +128,12 @@ export const detailAnnonce = async (req, res) => {
 
     res.json(annonce)
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    console.error(err)
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }
 
-// MES ANNONCES (propriétaire connecté)
+// MES ANNONCES (proprietaire connecte)
 export const mesAnnonces = async (req, res) => {
   try {
     const id_utilisateur = req.utilisateur.id
@@ -118,7 +151,8 @@ export const mesAnnonces = async (req, res) => {
 
     res.json(annonces)
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    console.error(err)
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }
 
@@ -131,16 +165,17 @@ export const modifierAnnonce = async (req, res) => {
 
     const annonce = await prisma.annonce.findUnique({ where: { id: parseInt(id) } })
     if (!annonce) return res.status(404).json({ message: 'Annonce introuvable' })
-    if (annonce.id_utilisateur !== id_utilisateur) return res.status(403).json({ message: 'Non autorisé' })
+    if (annonce.id_utilisateur !== id_utilisateur) return res.status(403).json({ message: 'Non autorise' })
 
     const updated = await prisma.annonce.update({
       where: { id: parseInt(id) },
       data: { titre, ville, quartier, description, prix, nombre_pieces, id_typechambre }
     })
 
-    res.json({ message: 'Annonce modifiée', annonce: updated })
+    res.json({ message: 'Annonce modifiee', annonce: updated })
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    console.error(err)
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }
 
@@ -152,19 +187,18 @@ export const supprimerAnnonce = async (req, res) => {
 
     const annonce = await prisma.annonce.findUnique({ where: { id: parseInt(id) } })
     if (!annonce) return res.status(404).json({ message: 'Annonce introuvable' })
-    if (annonce.id_utilisateur !== id_utilisateur) return res.status(403).json({ message: 'Non autorisé' })
+    if (annonce.id_utilisateur !== id_utilisateur) return res.status(403).json({ message: 'Non autorise' })
 
     await prisma.annonce.delete({ where: { id: parseInt(id) } })
 
-    res.json({ message: 'Annonce supprimée avec succès' })
+    res.json({ message: 'Annonce supprimee avec succes' })
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    console.error(err)
+    res.status(500).json({ message: 'Erreur serveur' })
   }
-
 }
 
-
-// RENOUVELER UNE ANNONCE EXPIRÉE
+// RENOUVELER UNE ANNONCE EXPIREE
 export const renouvelerAnnonce = async (req, res) => {
   try {
     const { id } = req.params
@@ -177,12 +211,13 @@ export const renouvelerAnnonce = async (req, res) => {
     })
 
     if (!annonce) return res.status(404).json({ message: 'Annonce introuvable' })
-    if (annonce.id_utilisateur !== id_utilisateur) return res.status(403).json({ message: 'Non autorisé' })
-    if (annonce.statut !== 'expiree') return res.status(400).json({ message: 'Seules les annonces expirées peuvent être renouvelées' })
+    if (annonce.id_utilisateur !== id_utilisateur) return res.status(403).json({ message: 'Non autorise' })
+    if (annonce.statut !== 'expiree') return res.status(400).json({ message: 'Seules les annonces expirees peuvent etre renouvelees' })
 
     const typeannonce = await prisma.typeannonce.findUnique({ where: { id: parseInt(id_typeannonce) } })
+    if (!typeannonce) return res.status(404).json({ message: 'Type annonce introuvable' })
 
-    const reference = `PAY-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+    const reference = `PAY-${Date.now()}-${Math.random().toString(36).substring(2, 11).toUpperCase()}`
 
     await prisma.paiementannonce.create({
       data: {
@@ -211,11 +246,12 @@ export const renouvelerAnnonce = async (req, res) => {
     })
 
     res.json({
-      message: '✅ Annonce renouvelée avec succès !',
+      message: 'Annonce renouvelee avec succes',
       annonce: updated,
       active_jusqu_au: dateFin
     })
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    console.error(err)
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }

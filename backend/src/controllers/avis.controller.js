@@ -24,7 +24,7 @@ export const ajouterAvis = async (req, res) => {
     })
     res.status(201).json({ message: 'Avis ajouté', avis })
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }
 
@@ -38,6 +38,6 @@ export const supprimerAvis = async (req, res) => {
     await prisma.avis.delete({ where: { id: parseInt(id) } })
     res.json({ message: 'Avis supprimé' })
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }

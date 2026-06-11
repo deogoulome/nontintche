@@ -19,7 +19,7 @@ export const ajouterFavori = async (req, res) => {
     await prisma.favori.create({ data: { id_utilisateur, id_annonce: parseInt(id_annonce) } })
     res.status(201).json({ message: 'Ajouté aux favoris', favori: true })
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }
 
@@ -42,6 +42,6 @@ export const mesFavoris = async (req, res) => {
     })
     res.json(favoris)
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }

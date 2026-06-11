@@ -26,7 +26,7 @@
 //     res.status(201).json({ message: 'Images uploadées avec succès', images })
 //   } catch (err) {
 //     console.error(err)
-//     res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+//     res.status(500).json({ message: 'Erreur serveur' })
 //   }
 // }
 
@@ -59,6 +59,6 @@ export const uploadImages = async (req, res) => {
     // Afficher l'erreur complète dans les logs
     console.error('ERREUR UPLOAD:', JSON.stringify(err, null, 2))
     console.error('MESSAGE:', err.message)
-    res.status(500).json({ message: 'Erreur serveur', erreur: err.message })
+    res.status(500).json({ message: 'Erreur serveur' })
   }
 }

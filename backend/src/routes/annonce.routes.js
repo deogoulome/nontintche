@@ -3,21 +3,22 @@ import { creerAnnonce, listerAnnonces, detailAnnonce, mesAnnonces, modifierAnnon
 import { verifierToken, estProprietaire } from '../middlewares/auth.middleware.js'
 import { upload } from '../middlewares/upload.middleware.js'
 import { uploadImages } from '../controllers/upload.controller.js'
+import { regleAnnonce, regleIdParam, valider } from '../middlewares/validation.middleware.js'
 
 const router = Router()
 
-// ✅ Routes spécifiques AVANT les routes avec paramètres
+// Routes specifiques AVANT les routes avec parametres
 router.get('/mes-annonces', verifierToken, estProprietaire, mesAnnonces)
 
 // Routes publiques
 router.get('/', listerAnnonces)
-router.get('/:id', detailAnnonce)
+router.get('/:id', regleIdParam, valider, detailAnnonce)
 
-// Routes protégées
-router.post('/', verifierToken, estProprietaire, creerAnnonce)
-router.put('/:id', verifierToken, estProprietaire, modifierAnnonce)
-router.delete('/:id', verifierToken, estProprietaire, supprimerAnnonce)
-router.post('/:id/renouveler', verifierToken, estProprietaire, renouvelerAnnonce)
-router.post('/:id/images', verifierToken, estProprietaire, upload.array('images', 5), uploadImages)
+// Routes protegees
+router.post('/', verifierToken, estProprietaire, regleAnnonce, valider, creerAnnonce)
+router.put('/:id', verifierToken, estProprietaire, regleIdParam, valider, modifierAnnonce)
+router.delete('/:id', verifierToken, estProprietaire, regleIdParam, valider, supprimerAnnonce)
+router.post('/:id/renouveler', verifierToken, estProprietaire, regleIdParam, valider, renouvelerAnnonce)
+router.post('/:id/images', verifierToken, estProprietaire, regleIdParam, valider, upload.array('images', 5), uploadImages)
 
 export default router
